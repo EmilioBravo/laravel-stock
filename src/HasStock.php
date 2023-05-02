@@ -49,8 +49,7 @@ trait HasStock
 
         if ($warehouse != null) {
             $mutations->where([
-                'reference_type' => $warehouse::class,
-                'reference_id' => $warehouse->id,
+                'warehouse_id' => $warehouse,
             ]);
         }
 
@@ -85,7 +84,7 @@ trait HasStock
 
     public function setStock($newAmount, $arguments = [])
     {
-        $currentStock = $this->stock(null, $arguments['reference'] ?? null);
+        $currentStock = $this->stock(null, $arguments['warehouse_id'] ?? null);
 
         if ($deltaStock = $newAmount - $currentStock) {
             return $this->createStockMutation($deltaStock, $arguments);
@@ -118,6 +117,7 @@ trait HasStock
         $createArguments = collect([
             'amount' => $amount,
             'description' => Arr::get($arguments, 'description'),
+            'warehouse_id' => Arr::get($arguments, 'warehouse_id'),
         ])->when($reference, function ($collection) use ($reference) {
             return $collection
                 ->put('reference_type', $reference->getMorphClass())

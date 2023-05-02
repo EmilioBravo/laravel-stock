@@ -2,6 +2,7 @@
 
 namespace Appstract\Stock;
 
+use EmilioBravo\FilamentCrm\Models\Warehouse;
 use Illuminate\Database\Eloquent\Model;
 
 class StockMutation extends Model
@@ -11,6 +12,7 @@ class StockMutation extends Model
         'stockable_id',
         'reference_type',
         'reference_id',
+        'warehouse_id',
         'amount',
         'description',
     ];
@@ -43,5 +45,15 @@ class StockMutation extends Model
     public function reference()
     {
         return $this->morphTo();
+    }
+
+    /**
+     * Relation.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\belongsTo
+     */
+    public function warehouse()
+    {
+        return $this->belongsTo(Warehouse::class);
     }
 }

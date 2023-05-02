@@ -1,5 +1,6 @@
 <?php
 
+use EmilioBravo\FilamentCrm\Models\Warehouse;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,7 +19,8 @@ class CreateStockMutationsTable extends Migration
             $table->morphs('stockable');
             $table->string('reference_type')->nullable();
             $table->unsignedBigInteger('reference_id')->nullable();
-            $table->integer('amount');
+            $table->foreignIdFor(Warehouse::class)->constrained()->onDelete('cascade');
+            $table->float('amount');
             $table->text('description')->nullable();
             $table->timestamps();
 
